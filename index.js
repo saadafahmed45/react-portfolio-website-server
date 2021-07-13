@@ -14,13 +14,17 @@ app.use(bodyParser.json())
 app.use(cors())
 const port = process.env.PORT || 7000;
 // mongoDB connection
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vvccs.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
-// console.log(uri);
-// set Uri
+
+const uri = "mongodb+srv://reactportfolio:reactportfolio45@cluster0.vvccs.mongodb.net/reactPortfolioDb?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vvccs.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+// console.log(uri);
+// set Uri
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 client.connect(err => {
-    const serviceCollection = client.db("portfolioDb404").collection("portfolioItems");
+    const portflioCollection = client.db("reactPortfolioDb").collection("portfolio");
     // const orderCollection = client.db("portfolioDb404").collection("addOrder");
     // const reviewCollection = client.db("portfolioDb404").collection("addReview");
     // const adminCollection = client.db("portfolioDb404").collection("addAdmin");
@@ -35,13 +39,15 @@ client.connect(err => {
   app.post('/addPortfolio',(req, res) => {
     const newItems = req.body;
     console.log('adding new event: ', newItems);
-    serviceCollection.insertOne(newItems)
+    portflioCollection.insertOne(newItems)
     .then(result => {
       console.log('inserted Count', result.insertedCount);
       res.send(result.insertedCount > 0);
     })
   })
 
+
+  
 // add order
 app.post('/addOrder',(req, res) => {
   const newItems = req.body;
@@ -80,8 +86,8 @@ app.post('/addAdmin',(req, res) => {
 
 //  services
 
- app.get('/services',(req, res) => {
-    serviceCollection.find()
+ app.get('/portfolio',(req, res) => {
+  portflioCollection.find()
     .toArray((err,items) =>{
       res.send(items)
   
