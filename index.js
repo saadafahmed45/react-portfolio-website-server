@@ -3,7 +3,6 @@
 const express = require('express')
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
-// const ObjectId = require('mongodb').ObjectID;
 const ObjectId = require("mongodb").ObjectId;
 const cors = require ('cors');
 require('dotenv').config()
@@ -48,16 +47,6 @@ client.connect(err => {
 
 
   
-// add order
-app.post('/addOrder',(req, res) => {
-  const newItems = req.body;
-  console.log('adding new event: ', newItems);
-  orderCollection.insertOne(newItems)
-  .then(result => {
-    console.log('inserted Count', result.insertedCount);
-    res.send(result.insertedCount > 0);
-  })
-})
 //  add review
 app.post('/addReview',(req, res) => {
   const newItems = req.body;
@@ -70,21 +59,10 @@ app.post('/addReview',(req, res) => {
 })
 
 
-// add admin 
-
-app.post('/addAdmin',(req, res) => {
-  const newItems = req.body;
-  console.log('adding new event: ', newItems);
-  adminCollection.insertOne(newItems)
-  .then(result => {
-    console.log('inserted Count', result.insertedCount);
-    res.send(result.insertedCount > 0);
-  })
-})
-
  // set data from database in server api
 
-//  services
+
+//  portfolio
 
  app.get('/portfolio',(req, res) => {
   portflioCollection.find()
@@ -93,30 +71,6 @@ app.post('/addAdmin',(req, res) => {
   
     })
   })
-
-// Orders
-
-  app.get('/orders',(req, res) => {
-    // console.log(req.headers.authorization);
-    orderCollection.find({email: req.query.email})
-    .toArray((err,items) =>{
-      res.send(items)
-  
-    })
-  })
-
-  // order list 
-
-
-  app.get('/ordersList',(req, res) => {
-    // console.log(req.query.email);
-    orderCollection.find()
-    .toArray((err,items) =>{
-      res.send(items)
-  
-    })
-  })
-
 
 
 
@@ -130,21 +84,6 @@ app.post('/addAdmin',(req, res) => {
     })
   })
 
-// admin
-
-
-app.post('/isAdmin', (req, res) => {
-  const email = req.body.email;
-  adminCollection.find({ email: email })
-      .toArray((err, admins) => {
-          res.send(admins.length > 0);
-      })
-})
-
-
-
-
-
 
 
 
@@ -153,7 +92,7 @@ app.post('/isAdmin', (req, res) => {
  app.delete("/delete/:id" , (req, res) =>{
     const id = req.params.id;
     console.log(req.params.id); 
-    serviceCollection.deleteOne({_id : ObjectId(id)})
+    portflioCollection.deleteOne({_id : ObjectId(id)})
     .then(documents => res.send("send"))
   })
 
